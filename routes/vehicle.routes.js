@@ -7,6 +7,8 @@ const {
   createVehicle,
   updateVehicle,
   deleteVehicle,
+  findByImmatriculation,
+  findByMaxPrix,
 } = require('../controllers/vehicle.controller');
 
 // 🔹 Récupérer tous les véhicules
@@ -23,5 +25,11 @@ router.put('/:id', updateVehicle);
 
 // 🔹 Supprimer un véhicule
 router.delete('/:id', deleteVehicle);
+
+// 🔍 Rechercher par immatriculation
+router.get('/search/immatriculation/:value', findByImmatriculation);
+
+// 💰 Rechercher par prix maximum
+router.get('/search/prix', findByMaxPrix);
 
 module.exports = router;

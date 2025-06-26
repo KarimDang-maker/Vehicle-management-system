@@ -80,10 +80,52 @@ const deleteVehicle = async (req, res) => {
   }
 };
 
+// 🔍 Rechercher par numéro d'immatriculation
+const findByImmatriculation = async (req, res) => {
+  try {
+    const { value } = req.params;
+    const vehicle = await Vehicle.findOne({ where: { immatriculation: value } });
+
+    if (!vehicle) {
+      return res.status(404).json({ message: 'Aucun véhicule trouvé avec cette immatriculation.' });
+    }
+
+    res.status(200).json(vehicle);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// 💰 Rechercher les véhicules avec un prix inférieur ou égal
+const findByMaxPrix = async (req, res) => {
+  try {
+    const max = parseFloat(req.query.max);
+
+    if (isNaN(max)) {
+      return res.status(400).json({ message: 'Le paramètre max doit être un nombre.' });
+    }
+
+    const vehicles = await Vehicle.findAll({
+      where: {
+        prixLocation: {
+          [require('sequelize').Op.lte]: max,
+        },
+      },
+    });
+
+    res.status(200).json(vehicles);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllVehicles,
   getVehicleById,
   createVehicle,
   updateVehicle,
   deleteVehicle,
+  findByImmatriculation,
+  findByMaxPrix,
 };
