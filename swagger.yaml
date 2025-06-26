@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+  title: Vehicle Management System API
+  description: API pour gérer une flotte de véhicules (CRUD complet)
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Serveur local
+
+paths:
+  /api/vehicles:
+    get:
+      summary: Récupérer tous les véhicules
+      responses:
+        '200':
+          description: Liste des véhicules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+
+    post:
+      summary: Créer un nouveau véhicule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleInput'
+      responses:
+        '201':
+          description: Véhicule créé avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+
+  /api/vehicles/{id}:
+    get:
+      summary: Récupérer un véhicule par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Véhicule trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '404':
+          description: Véhicule non trouvé
+
+    put:
+      summary: Mettre à jour un véhicule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleInput'
+      responses:
+        '200':
+          description: Véhicule mis à jour
+
+    delete:
+      summary: Supprimer un véhicule
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Véhicule supprimé
+        '404':
+          description: Véhicule non trouvé
+
+components:
+  schemas:
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        marque:
+          type: string
+        model:
+          type: string
+        immatriculation:
+          type: string
+        annee:
+          type: integer
+        prixLocation:
+          type: number
+        disponible:
+          type: boolean
+
+    VehicleInput:
+      type: object
+      required:
+        - marque
+        - model
+        - immatriculation
+        - annee
+        - prixLocation
+      properties:
+        marque:
+          type: string
+        model:
+          type: string
+        immatriculation:
+          type: string
+        annee:
+          type: integer
+        prixLocation:
+          type: number
+        disponible:
+          type: boolean

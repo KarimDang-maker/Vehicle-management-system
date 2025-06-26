@@ -1,38 +1,36 @@
-// src/app.js
-
 const express = require('express');
 require('dotenv').config();
 
 const vehicleRoutes = require('./routes/vehicle.routes');
-const logger = require('./middlewares/logger');
-const errorHandler = require('./middlewares/errorHandler');
+// const logger = require('./middlewares/logger');         // ✅ Correction du chemin
+// const errorHandler = require('./middlewares/errorHandler');
 
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./swagger.yaml');
+const swaggerDocument = YAML.load('./swagger.yaml');   // ⚠️ Assure-toi que le fichier est bien là
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares
-app.use(express.json());
-app.use(logger); // Middleware de log personnalisé
+// 📦 Middlewares globaux
+// app.use(express.json());
+// app.use(logger); // Logging des requêtes
 
-// Swagger UI
+// 📚 Documentation Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-// Routes API
+// 🚗 Routes API
 app.use('/api/vehicles', vehicleRoutes);
 
-// Route par défaut
+// 🏠 Route par défaut
 app.get('/', (req, res) => {
   res.send('🚀 API Véhicules est en ligne !');
 });
 
-// Gestion d’erreur globale
-app.use(errorHandler);
+// // ❌ Gestion d’erreurs globales
+// app.use(errorHandler);
 
-// Lancer le serveur
+// 🚀 Lancement du serveur
 app.listen(PORT, () => {
   console.log(`🚗 Serveur en écoute sur http://localhost:${PORT}`);
 });
