@@ -10,7 +10,7 @@ const {
   findByImmatriculation,
   findByMaxPrix,
 } = require('../controllers/vehicle.controller');
-const auth = require('../middlewares.js/auth');
+const auth = require('../middlewares/auth');
 
 // 🔹 Récupérer tous les véhicules
 router.get('/', getAllVehicles);
