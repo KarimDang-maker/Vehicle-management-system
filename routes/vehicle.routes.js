@@ -10,6 +10,7 @@ const {
   findByImmatriculation,
   findByMaxPrix,
 } = require('../controllers/vehicle.controller');
+const auth = require('../middlewares.js/auth');
 
 // 🔹 Récupérer tous les véhicules
 router.get('/', getAllVehicles);
@@ -18,13 +19,13 @@ router.get('/', getAllVehicles);
 router.get('/:id', getVehicleById);
 
 // 🔹 Créer un nouveau véhicule
-router.post('/', createVehicle);
+router.post('/',auth, createVehicle);
 
 // 🔹 Mettre à jour un véhicule existant
-router.put('/:id', updateVehicle);
+router.put('/:id',auth, updateVehicle);
 
 // 🔹 Supprimer un véhicule
-router.delete('/:id', deleteVehicle);
+router.delete('/:id',auth, deleteVehicle);
 
 // 🔍 Rechercher par immatriculation
 router.get('/search/immatriculation/:value', findByImmatriculation);

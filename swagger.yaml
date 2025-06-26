@@ -89,6 +89,52 @@ paths:
         '404':
           description: Véhicule non trouvé
 
+  /api/vehicles/search/immatriculation/{value}:
+    get:
+      summary: Rechercher un véhicule par numéro d'immatriculation
+      parameters:
+        - name: value
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Numéro d'immatriculation du véhicule (ex: AB-123-CD)
+      responses:
+        '200':
+          description: Véhicule trouvé
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '404':
+          description: Véhicule non trouvé
+        '500':
+          description: Erreur interne
+
+  /api/vehicles/search/prix:
+    get:
+      summary: Rechercher des véhicules par prix maximum
+      parameters:
+        - name: max
+          in: query
+          required: true
+          schema:
+            type: number
+          description: Prix maximum de location (ex: 40000)
+      responses:
+        '200':
+          description: Liste des véhicules correspondant au critère de prix
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: Paramètre invalide
+        '500':
+          description: Erreur interne
+
 components:
   schemas:
     Vehicle:

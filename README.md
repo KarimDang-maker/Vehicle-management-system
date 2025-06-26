@@ -1,84 +1,74 @@
-# 🚗 CONCEPTION D'UNE API de Gestion de Véhicules – Propelize
+# 🚗 Propelize - Vehicle Management System API
 
-## 📌 Description
-API REST pour gérer les véhicules à louer.
+![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
+![Express](https://img.shields.io/badge/Express-4.x-lightgrey)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
+![Docker](https://img.shields.io/badge/Docker-✓-blue)
 
-## ⚙️ Technologies
-- Node.js
-- Express.js
-- MySQL avec Sequelize ORM
-- Docker + Docker Compose
+API RESTful complète pour la gestion d'une flotte de véhicules en location, avec système d'authentification et documentation Swagger intégrée.
 
+## 📌 Fonctionnalités
 
+- **CRUD complet** pour les véhicules
+- Recherche avancée par immatriculation
+- Filtrage par prix maximum
+- Documentation interactive avec Swagger UI
+- Sécurisation des endpoints critiques
+- Architecture conteneurisée avec Docker
+- Seed de données initiales
 
-### Models / Ressources
-#### Vehicule
-    - Marque : String
-    - Model : String
-    - Immatriculation :  String
-    - Annee : Number
-    - prixLocation : number
+## ⚙️ Stack Technique
 
+### Backend
+- **Node.js** (v18+)
+- **Express.js** (Framework web)
+- **Sequelize** (ORM pour MySQL)
+- **Swagger UI** (Documentation API)
+- **JWT** (Authentification)
 
-### EndPoint / Points d'extremites 
-#### CRUD
+### Infrastructure
+- **Docker** + **Docker Compose**
+- **MySQL 8.0** (Base de données)
+- **Nginx** (Reverse proxy - optionnel)
 
-1. creer un vehicule
-HTTP POST
-URL:/vehicule
-Request body: entite / information du vehicule
+### Outils
+- **Postman** (Collection fournie)
+- **ESLint** (Linting du code)
+- **Nodemon** (Rechargement automatique)
 
-Response:   200: Vehicule creer
-            500: Erreur
+## 🏗️ Modèle de Données - Véhicule
 
+| Champ             | Type     | Description                          | Exemple          |
+|-------------------|----------|--------------------------------------|------------------|
+| `id`              | integer  | ID auto-incrémenté                   | 1                |
+| `marque`          | string   | Marque du véhicule                   | "Toyota"         |
+| `model`           | string   | Modèle du véhicule                   | "Corolla"        |
+| `immatriculation` | string   | Plaque unique (format XX-123-XX)     | "AB-123-CD"      |
+| `annee`           | integer  | Année de fabrication                 | 2020             |
+| `prixLocation`    | float    | Prix journalier (FCFA)               | 35000            |
+| `disponible`      | boolean  | Statut de disponibilité              | true             |
+| `createdAt`       | datetime | Date de création (auto)              | 2023-01-01T00:00 |
+| `updatedAt`       | datetime | Date de modification (auto)          | 2023-01-01T00:00 |
 
-2. Mise a jour
-HTTP PUT
-URL: /Vehicule/:id
-Request body: entite / information du vehicule 
+## 🚀 Endpoints
 
-Response:   200: Vhicule mis a jour.
-            500: Erreur d'application 
+### 🔓 Endpoints Publics
 
-3. Supression
-HTTP DELETTE 
-URL: /Vehicule/:id
+| Méthode | Endpoint                          | Description                          |
+|---------|-----------------------------------|--------------------------------------|
+| GET     | `/api/vehicules`                 | Liste tous les véhicules             |
+| GET     | `/api/vehicules/:id`             | Détails d'un véhicule                |
+| GET     | `/api/vehicules/search/:immat`   | Recherche par immatriculation        |
+| GET     | `/api/vehicules/price/:maxPrice` | Filtre par prix maximum              |
 
-Response:   200: Supression effectue
-            500: Erreur d'application
+### 🔐 Endpoints Protégés (Requièrent JWT)
 
-4. Lire les informations d'un vehicule a l'aide de soun iddentifiant
-HTTP GET
-URL: Vehicule/id
+| Méthode | Endpoint                | Description                     |
+|---------|-------------------------|---------------------------------|
+| POST    | `/api/vehicules`        | Créer un nouveau véhicule       |
+| PUT     | `/api/vehicules/:id`    | Mettre à jour un véhicule       |
+| DELETE  | `/api/vehicules/:id`    | Supprimer un véhicule           |
 
-Response :  200: Une liste de vehicule 
-            404: Vehicule introuvable
-            500: Erreur d'appliaction
-
-5. afficher tous les vehicules ( Nous rencvoie la liste de tous les vehicules )
-HTTP GET
-URL: Vehicules
-
-Response:   200: Afficher une liste de vehicules
-            404: Vehicule non trouvee
-            500: Erreur d'application 
-
-6. Lire un vehicule a l'aide de son numero de son nummero d'immatriculation 
-HTTP GET
-URL: Vehicule/search/:immatriculation
-
-Response:   200: Vehicule ok
-            404: Vehicule non trouve 
-            500: Erreur d'application 
-
-7. Recuperer les vehicules par prix ( Filtrage des vehicules par le prix maximum )
-HTTP GET 
-URL: Vehicule/price:prixMax
-
-Response:   200: Afficher une liste de vehicules
-            404: Vehicules non trouve
-            500: Erreur d'application 
-
-## ▶️ Démarrage
-```bash
-docker-compose up --build
+### Authentification
+```http
+Authorization: Bearer votre_token_jwt
