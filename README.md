@@ -1,5 +1,13 @@
-# CONCEPTION DE MON API DE GESTION DES VEHICULES 
+# 🚗 CONCEPTION D'UNE API de Gestion de Véhicules – Propelize
 
+## 📌 Description
+API REST pour gérer les véhicules à louer.
+
+## ⚙️ Technologies
+- Node.js
+- Express.js
+- MySQL avec Sequelize ORM
+- Docker + Docker Compose
 
 
 
@@ -20,7 +28,7 @@ HTTP POST
 URL:/vehicule
 Request body: entite / information du vehicule
 
-Response:   201: Vehicule creer
+Response:   200: Vehicule creer
             500: Erreur
 
 
@@ -70,17 +78,6 @@ URL: Vehicule/price:prixMax
 Response:   200: Afficher une liste de vehicules
             404: Vehicules non trouve
             500: Erreur d'application 
-
- # 🚗 API de Gestion de Véhicules – Propelize
-
-## 📌 Description
-API REST pour gérer les véhicules à louer.
-
-## ⚙️ Technologies
-- Node.js
-- Express.js
-- MySQL avec Sequelize ORM
-- Docker + Docker Compose
 
 ## ▶️ Démarrage
 ```bash
