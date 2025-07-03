@@ -35,4 +35,11 @@ app.listen(PORT, () => {
   console.log(`🚗 Serveur en écoute sur http://localhost:${PORT}`);
 });
 
+//INTERFACES
+app.use('/web/user/view', require('./routes/web/user/view'));
+app.use('/web/vehicule/index', require('./routes/web/vehicule/index'));
+app.use('/web/vehicule/create', require('./routes/web/vehicule/create'));
+app.use('/web/vehicule/update', require('./routes/web/vehicule/update'));
+app.use('/web/vehicule/delete', require('./routes/web/vehicule/delete'));
+
 module.exports = app;
