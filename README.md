@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+# Vehicle-management-system
+groupe10_ICT304
+=======
 # 🚗 Propelize - Vehicle Management System API
 
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-green)
@@ -72,3 +76,4 @@ API RESTful complète pour la gestion d'une flotte de véhicules en location, av
 ### Authentification
 ```http
 Authorization: Bearer votre_token_jwt
+>>>>>>> e32cb6029edeb74c9d1a25f364acec4214d1a852
