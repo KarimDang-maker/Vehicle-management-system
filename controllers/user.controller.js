@@ -43,10 +43,43 @@ const updateUser = async (req, res) => {
   }
 };
 
+// Lister tous les utilisateurs
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({ attributes: { exclude: ['password', 'refreshToken'] } });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
+// Afficher un utilisateur par ID
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id, { attributes: { exclude: ['password', 'refreshToken'] } });
+    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
+// Supprimer un utilisateur
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    await user.destroy();
+    res.json({ message: 'Utilisateur supprimé' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   createUser,
   updateUser,
+  getAllUsers,
+  getUserById,
+  deleteUser,
 };
