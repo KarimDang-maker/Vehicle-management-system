@@ -1,19 +1,22 @@
-const { verifyToken } = require('../utils/jwt');
+const { verifyAccessToken } = require('../utils/jwt');
 
-const authMiddleware = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  
-  if (!token) {
-    return res.status(401).json({ message: 'Accès non autorisé' });
-  }
-
+const authenticate = async (req, res, next) => {
   try {
-    const decoded = verifyToken(token);
-    req.user = decoded;
+    const token = req.cookies.access_token;
+    
+    if (!token) {
+      return res.status(401).json({ message: 'Non authentifié' });
+    }
+
+    const decoded = verifyAccessToken(token);
+    req.userId = decoded.userId;
     next();
   } catch (error) {
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Token expiré' });
+    }
     res.status(401).json({ message: 'Token invalide' });
   }
 };
 
-module.exports = authMiddleware;
+module.exports = authenticate;
