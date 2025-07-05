@@ -1,0 +1,23 @@
+# Fichiers générés par Playwright
+playwright-report/
+test-results/
+playwright/.cache/
+playwright/.cache/
+
+# Captures d'écran et vidéos de test
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.webm
+
+# Logs de test
+*.log
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# Fichiers de configuration locale
+.env.local
+.env.test 
