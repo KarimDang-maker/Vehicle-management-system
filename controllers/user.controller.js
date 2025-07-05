@@ -100,9 +100,22 @@ const refreshToken = async (req, res) => {
   }
 };
 
+// Récupération de tous les utilisateurs
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'name', 'email', 'role'] // sans le mot de passe
+    });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+};
+
 module.exports = {
   createUser,
   updateUser,
   login,
   refreshToken,
+  getAllUsers,
 };

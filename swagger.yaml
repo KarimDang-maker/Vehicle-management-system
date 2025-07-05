@@ -1,52 +1,106 @@
 openapi: 3.0.0
 info:
   title: Vehicle & User Management API
+  version: "1.0.0"
   description: API pour gérer une flotte de véhicules et les utilisateurs (CRUD complet)
-  version: 2.0.0
-
 servers:
-  - url: http://localhost:3000
-    description: Serveur local
+  - url: http://localhost:3001
+components:
+  schemas:
+    # Schémas existants pour les véhicules
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+        marque:
+          type: string
+        model:
+          type: string
+        immatriculation:
+          type: string
+        annee:
+          type: integer
+        prixLocation:
+          type: number
+        disponible:
+          type: boolean
 
+    VehicleInput:
+      type: object
+      required:
+        - marque
+        - model
+        - immatriculation
+        - annee
+        - prixLocation
+      properties:
+        marque:
+          type: string
+        model:
+          type: string
+        immatriculation:
+          type: string
+        annee:
+          type: integer
+        prixLocation:
+          type: number
+        disponible:
+          type: boolean
+
+    # Nouveaux schémas pour les utilisateurs
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [user, admin]
+
+    UserInput:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        role:
+          type: string
+          enum: [user, admin]
+          default: user
+
+    UserUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 paths:
-  # Endpoints pour les véhicules (existants)
-  /api/vehicles:
-    get:
-      summary: Récupérer tous les véhicules
-      responses:
-        '200':
-          description: Liste des véhicules
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Vehicle'
-
-    post:
-      summary: Créer un nouveau véhicule
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/VehicleInput'
-      responses:
-        '201':
-          description: Véhicule créé avec succès
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vehicle'
-
-  # ... (autres endpoints véhicules existants)
-
-  # Nouveaux endpoints pour les utilisateurs
   /api/auth/login:
     post:
-      summary: Authentification utilisateur
+      summary: Authentifier un utilisateur et obtenir un token JWT
       requestBody:
         required: true
         content:
@@ -59,7 +113,6 @@ paths:
                   format: email
                 password:
                   type: string
-                  format: password
               required:
                 - email
                 - password
@@ -168,96 +221,3 @@ paths:
           description: Accès non autorisé
         '404':
           description: Utilisateur non trouvé
-
-components:
-  schemas:
-    # Schémas existants pour les véhicules
-    Vehicle:
-      type: object
-      properties:
-        id:
-          type: integer
-        marque:
-          type: string
-        model:
-          type: string
-        immatriculation:
-          type: string
-        annee:
-          type: integer
-        prixLocation:
-          type: number
-        disponible:
-          type: boolean
-
-    VehicleInput:
-      type: object
-      required:
-        - marque
-        - model
-        - immatriculation
-        - annee
-        - prixLocation
-      properties:
-        marque:
-          type: string
-        model:
-          type: string
-        immatriculation:
-          type: string
-        annee:
-          type: integer
-        prixLocation:
-          type: number
-        disponible:
-          type: boolean
-
-    # Nouveaux schémas pour les utilisateurs
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-        role:
-          type: string
-          enum: [user, admin]
-
-    UserInput:
-      type: object
-      required:
-        - name
-        - email
-        - password
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-        password:
-          type: string
-          format: password
-        role:
-          type: string
-          enum: [user, admin]
-          default: user
-
-    UserUpdate:
-      type: object
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
