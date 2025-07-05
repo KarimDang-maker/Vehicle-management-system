@@ -1,12 +1,22 @@
 const { generateAccessToken, generateRefreshToken } = require('../utils/jwt');
-const User = require('../models/User');
+const User = require('../models/user.model');
 
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ where: { email } });
+    console.log("Tentative de login pour :", email);
 
-    if (!user || !(await user.validPassword(password))) {
+    const user = await User.findOne({ where: { email } });
+    console.log("Utilisateur trouvé :", user ? user.email : "Aucun");
+
+    if (!user) {
+      return res.status(401).json({ message: 'Identifiants invalides' });
+    }
+
+    const isValid = await user.validPassword(password);
+    console.log("Mot de passe valide ?", isValid);
+
+    if (!isValid) {
       return res.status(401).json({ message: 'Identifiants invalides' });
     }
 
@@ -33,6 +43,7 @@ const login = async (req, res) => {
 
     res.status(201).json({ message: 'Connexion réussie' });
   } catch (error) {
+    console.error("Erreur dans login :", error);
     res.status(500).json({ message: 'Erreur de connexion' });
   }
 };
